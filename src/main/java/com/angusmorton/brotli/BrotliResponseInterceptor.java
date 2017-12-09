@@ -20,19 +20,14 @@ public class BrotliResponseInterceptor implements Interceptor {
 
     // If we add an "Accept-Encoding: br" header field we're responsible for also decompressing
     // the transfer stream.
-    boolean transparentBrotli = false;
-    if (userRequest.header("Accept-Encoding") == null && userRequest.header("Range") == null) {
-      transparentBrotli = true;
-      requestBuilder.header("Accept-Encoding", "br");
-    }
+    requestBuilder.addHeader("Accept-Encoding", "br");
 
     Response networkResponse = chain.proceed(requestBuilder.build());
 
     Response.Builder responseBuilder = networkResponse.newBuilder()
         .request(userRequest);
 
-    if (transparentBrotli
-        && "br".equalsIgnoreCase(networkResponse.header("Content-Encoding"))
+    if ("br".equalsIgnoreCase(networkResponse.header("Content-Encoding"))
         && HttpHeaders.hasBody(networkResponse)) {
       Source brotliSource = BrotliSource.create(networkResponse.body().source());
       Headers strippedHeaders = networkResponse.headers().newBuilder()
