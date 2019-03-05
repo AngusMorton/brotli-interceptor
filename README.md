@@ -12,7 +12,7 @@ Download
 --------
 
 ```groovy
-compile 'com.angusmorton:brotli-interceptor:1.0.0-SNAPSHOT'
+compile 'com.angusmorton:brotli-interceptor:1.0.0'
 ```
 
 Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
